@@ -1,0 +1,5 @@
+Urgency,Impact 1-Critical,Impact 2-High,Impact 3-Medium,Impact 4-Low
+1-Critical,P1,P1,P2,P3
+2-High,P1,P2,P3,P4
+3-Medium,P2,P3,P4,P4
+4-Low,P3,P4,P4,P4

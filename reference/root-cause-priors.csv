@@ -1,0 +1,22 @@
+Category,Most common root cause,Share,Samples,Full distribution
+Payments - Credit Card,Data Corruption,0.32,96,Data Corruption=31; Third-Party Service Failure=26; Unknown Cause=20; Configuration Error=12; Human Error=4; Software Bug=1; Process Failure=1; Performance Degradation=1
+XC (Product and Services),Data Corruption,0.33,58,Data Corruption=19; Configuration Error=15; Unknown Cause=11; Human Error=4; Process Failure=2; Access Issue=2; Software Bug=2; Third-Party Service Failure=1; Application Crash=1; Performance Degradation=1
+Payments Registration,Data Corruption,0.3,56,Data Corruption=17; Unknown Cause=13; Third-Party Service Failure=12; Configuration Error=8; Process Failure=4; Software Bug=1; Human Error=1
+Login,Access Issue,0.7,46,Access Issue=32; Unknown Cause=5; Data Corruption=3; Human Error=3; Software Bug=2; Configuration Error=1
+Bookings (Products) - Short Stay,Configuration Error,0.37,27,Configuration Error=10; Data Corruption=6; Human Error=5; Unknown Cause=3; Process Failure=2; Training Issue=1
+Invoicing,Data Corruption,0.32,19,Data Corruption=6; Unknown Cause=5; Human Error=2; Configuration Error=2; Process Failure=1; Training Issue=1; Access Issue=1; Third-Party Service Failure=1
+Accounts and Companies,Access Issue,0.5,14,Access Issue=7; Unknown Cause=3; Data Corruption=3; Performance Degradation=1
+SOA,Configuration Error,0.43,14,Configuration Error=6; Data Corruption=5; Training Issue=3
+Retainers,Data Corruption,0.44,9,Data Corruption=4; Unknown Cause=3; Human Error=2
+Bookings (Products),Unknown Cause,0.5,6,Unknown Cause=3; Configuration Error=2; Third-Party Service Failure=1
+Mobile,Access Issue,0.6,5,Access Issue=3; Data Corruption=2
+Documents,Software Bug,0.6,5,Software Bug=3; Access Issue=1; Human Error=1
+Services,Data Corruption,0.4,5,Data Corruption=2; Access Issue=1; Human Error=1; Unknown Cause=1
+Contract API/Agreements,Human Error,0.67,3,Human Error=2; Unknown Cause=1
+CSU,Human Error,1.0,3,Human Error=3
+Memberships,Configuration Error,0.5,2,Configuration Error=1; Software Bug=1
+Roles and Permissions,Software Bug,1.0,1,Software Bug=1
+Quick Access,Unknown Cause,1.0,1,Unknown Cause=1
+Payments - Direct Debit,Third-Party Service Failure,1.0,1,Third-Party Service Failure=1
+Center setup,Configuration Error,1.0,1,Configuration Error=1
+Network devices,Human Error,1.0,1,Human Error=1

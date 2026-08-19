@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+~$*.xlsx
+
+# Run workbooks contain real ServiceNow ticket data.
+# NOTE: the Proposed Masters running tally lives inside the newest workbook in
+# runs/, so if the team is to share one tally, the current workbook must be
+# committed. Decide deliberately before relaxing this — see README.
+runs/*
+!runs/.gitkeep

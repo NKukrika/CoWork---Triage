@@ -1,0 +1,104 @@
+Sheet,Tier,Issue type,Urgency,Status
+CP,Critical Functionalities,Login Issues,1,FROM MAPPING v0.2
+CP,Critical Functionalities,Issues with Accounts & Companies,1,FROM MAPPING v0.2
+CP,Critical Functionalities,Credit Card payment issues,1,FROM MAPPING v0.2
+CP,Critical Functionalities,Agreements: Renewals & Terminations,1,FROM MAPPING v0.2
+CP,Critical Functionalities,Issues with adding Network Devices,1,FROM MAPPING v0.2
+CP,Critical Functionalities,Issue with Bookings,2,CONFIRMED by service owner (blank in source v0.2)
+CP,Critical Functionalities,Application Performance (unusable),1,FROM MAPPING v0.2
+CP,Major Functionalities,Invoice issues,2,FROM MAPPING v0.2
+CP,Major Functionalities,Direct Debit Payment issues,2,FROM MAPPING v0.2
+CP,Major Functionalities,Email Issues,2,FROM MAPPING v0.2
+CP,Major Functionalities,Call Answering Configuration Issues,2,FROM MAPPING v0.2
+CP,Major Functionalities,Issues with Membership and Business Lounge,2,FROM MAPPING v0.2
+CP,Major Functionalities,Products & Services,2,FROM MAPPING v0.2
+CP,Major Functionalities,Balance mismatch,2,FROM MAPPING v0.2
+CP,Major Functionalities,Issues with MyRegus Staff Mode,2,FROM MAPPING v0.2
+CP,Major Functionalities,Return of Retainer Issues,2,FROM MAPPING v0.2
+CP,Major Functionalities,Application Performance (intermmittent),2,FROM MAPPING v0.2
+CP,Minor Functionalities,Customer Communications and Documents,3,FROM MAPPING v0.2
+CP,Minor Functionalities,Events Space Issue,3,FROM MAPPING v0.2
+CP,Minor Functionalities,Help & Inbox,3,FROM MAPPING v0.2
+CP,Minor Functionalities,World Key Pin issues,3,FROM MAPPING v0.2
+CP,Minor Functionalities,Language & Translations,3,FROM MAPPING v0.2
+CP,Low,Consultation on functionality,4,FROM MAPPING v0.2
+Teamhub,Critical Functionalities,Login Issues,1,FROM MAPPING v0.2
+Teamhub,Critical Functionalities,Amending an agreement,1,FROM MAPPING v0.2
+Teamhub,Critical Functionalities,Visitor check-in/check-out,1,FROM MAPPING v0.2
+Teamhub,Critical Functionalities,Previous/upcoming invoices,1,FROM MAPPING v0.2
+Teamhub,Critical Functionalities,Adding / Editing a Service,1,FROM MAPPING v0.2
+Teamhub,Critical Functionalities,Unable to Save Recurring,1,FROM MAPPING v0.2
+Teamhub,Critical Functionalities,Parking,2,CONFIRMED by service owner (blank in source v0.2)
+Teamhub,Critical Functionalities,Unable to Move Short stay Bookings,1,FROM MAPPING v0.2
+Teamhub,Critical Functionalities,Logging a ticket,1,FROM MAPPING v0.2
+Teamhub,Critical Functionalities,Application Performance (unusable),1,FROM MAPPING v0.2
+Teamhub,Major Functionalities,Incorrect or missing company details,2,FROM MAPPING v0.2
+Teamhub,Major Functionalities,Unable to access other centre/s,2,FROM MAPPING v0.2
+Teamhub,Major Functionalities,Application Performance (intermmitent),2,FROM MAPPING v0.2
+Teamhub,Major Functionalities,Staff Worldkey Pin,2,FROM MAPPING v0.2
+Teamhub,Major Functionalities,Unable to Close Tickets on Teamhub,2,FROM MAPPING v0.2
+Teamhub,Minor Functionalities,Installing the app,3,FROM MAPPING v0.2
+Teamhub,Minor Functionalities,Updating the app,3,FROM MAPPING v0.2
+Teamhub,Minor Functionalities,Customer Documents (eFile),3,FROM MAPPING v0.2
+Teamhub,Minor Functionalities,My Status or Time Off,3,FROM MAPPING v0.2
+Teamhub,Low,Consultation on functionality,4,FROM MAPPING v0.2
+Teamhub,Low,New access request,4,FROM MAPPING v0.2
+Titan,Critical Functionalities,Login Issues,1,FROM MAPPING v0.2
+Titan,Critical Functionalities,E-Invoicing issues,1,FROM MAPPING v0.2
+Titan,Critical Functionalities,Payment issues,1,FROM MAPPING v0.2
+Titan,Critical Functionalities,Invoicing Issues,1,FROM MAPPING v0.2
+Titan,Critical Functionalities,Booking Issues,1,FROM MAPPING v0.2
+Titan,Critical Functionalities,Renewal Issues,1,FROM MAPPING v0.2
+Titan,Critical Functionalities,Accounts and Company Issues,1,FROM MAPPING v0.2
+Titan,Critical Functionalities,Membership & Business Lounge Issues,1,FROM MAPPING v0.2
+Titan,Critical Functionalities,Titan Interface Errors,1,FROM MAPPING v0.2
+Titan,Critical Functionalities,Feed/DEM Issues,1,FROM MAPPING v0.2
+Titan,Critical Functionalities,Application Performance (unusable),1,FROM MAPPING v0.2
+Titan,Major Functionalities,Email Issues,2,FROM MAPPING v0.2
+Titan,Major Functionalities,Products & Services Issues,2,FROM MAPPING v0.2
+Titan,Major Functionalities,Balance mismatch and SOA Issues,2,FROM MAPPING v0.2
+Titan,Major Functionalities,Pricing Issues,2,FROM MAPPING v0.2
+Titan,Major Functionalities,Centre Setup Interface Issues,2,FROM MAPPING v0.2
+Titan,Major Functionalities,Suspense Account Issues,2,FROM MAPPING v0.2
+Titan,Major Functionalities,Inventory Issues,2,FROM MAPPING v0.2
+Titan,Major Functionalities,Termination Issues,2,FROM MAPPING v0.2
+Titan,Major Functionalities,Retainer Issues,2,FROM MAPPING v0.2
+Titan,Major Functionalities,Application Performance (intermmittent),2,FROM MAPPING v0.2
+Titan,Minor Functionalities,Reports Request/Issues,3,FROM MAPPING v0.2
+Titan,Minor Functionalities,Customer E-File,3,FROM MAPPING v0.2
+Titan,Low,Consultation on functionality,4,FROM MAPPING v0.2
+General,Critical Functionalities,"Invoicing, bookings or Payment issues (no workaround available)",1,FROM MAPPING v0.2
+General,Critical Functionalities,Issues blocking Sales or GSC or Finance or AHD or Centre Teams or IT activities (including severe performance issues),1,FROM MAPPING v0.2
+General,Critical Functionalities,Systems access issues,1,FROM MAPPING v0.2
+General,Major Functionalities,"Invoicing, bookings or Payment issues (workaround available)",2,FROM MAPPING v0.2
+General,Major Functionalities,Errors or issues in non-critical functionalities (none of the above),2,FROM MAPPING v0.2
+General,Major Functionalities,Intermmittent performance issues,2,FROM MAPPING v0.2
+General,Major Functionalities,"Feeds to 3rd parties failing (Finance, Titan systems)",2,FROM MAPPING v0.2
+General,Minor Functionalities,Reporting issues,3,FROM MAPPING v0.2
+General,Minor Functionalities,Visibility of documents,3,FROM MAPPING v0.2
+General,Minor Functionalities,Email template issues,3,FROM MAPPING v0.2
+General,Minor Functionalities,Application updates,3,FROM MAPPING v0.2
+General,Minor Functionalities,Requests in general,3,FROM MAPPING v0.2
+General,Minor Functionalities,Cosmetic issues,3,FROM MAPPING v0.2
+General,Minor Functionalities,Customer account balance issues (Statement of Account - SoA),3,FROM MAPPING v0.2
+General,Low,Consultation on functionality,4,FROM MAPPING v0.2
+General,Low,Report request,4,FROM MAPPING v0.2
+General,Low,New access request,4,FROM MAPPING v0.2
+Finance,Critical Functionalities,Login Issues,1,FROM MAPPING v0.2
+Finance,Critical Functionalities,Application availability,1,FROM MAPPING v0.2
+Finance,Critical Functionalities,Function availability/useability,1,FROM MAPPING v0.2
+Finance,Critical Functionalities,Application Performance (Unusable),1,FROM MAPPING v0.2
+Finance,Major Functionalities,Failure of feeds to third parties,2,FROM MAPPING v0.2
+Finance,Major Functionalities,GL/AR posting failure,2,FROM MAPPING v0.2
+Finance,Major Functionalities,Prolonged response times,2,FROM MAPPING v0.2
+Finance,Major Functionalities,Process or instance failure,2,FROM MAPPING v0.2
+Finance,Major Functionalities,Issues running reports,2,FROM MAPPING v0.2
+Finance,Major Functionalities,Application Performance (Inttermmitent),2,FROM MAPPING v0.2
+Finance,Minor Functionalities,Intermittent failures on certain functionalities,3,FROM MAPPING v0.2
+Finance,Minor Functionalities,Slightly degraded performance,3,FROM MAPPING v0.2
+Finance,Minor Functionalities,Journal import error / combo error,3,FROM MAPPING v0.2
+Finance,Minor Functionalities,Imbalances,3,FROM MAPPING v0.2
+Finance,Minor Functionalities,Password/access issues,3,FROM MAPPING v0.2
+Finance,Low,Consultation on functionality,4,FROM MAPPING v0.2
+Finance,Low,Report request,4,FROM MAPPING v0.2
+Finance,Low,New access,4,FROM MAPPING v0.2

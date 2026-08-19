@@ -1,0 +1,4 @@
+SUPERSEDED,Read the "Proposed Masters" sheet in the latest workbook in runs/ instead
+Reason,"Keeping a running count in two places lets them drift. The workbook is now the single source of truth: each run reads the Proposed Masters sheet from the newest workbook in runs/, adds to it, and writes the updated sheet into the new workbook."
+Loader,classify.load_tally("runs")
+Date superseded,2026-08-13

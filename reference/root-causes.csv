@@ -1,0 +1,30 @@
+Precedence,Root cause,Definition,Signals
+10,Data Corruption,"Stored data is wrong, inconsistent between systems, or damaged - including migration artefacts and corrupted identity records.",corrupted; migration issue; data migration; migration voucher; dms; mismatch identified; inconsistent data; userprofileid; contactuserprofile; duplicate record; duplicate account; orphaned record; wrong value stored
+10,Configuration Error,"A setting, mapping, flag or record state is wrong - including entity/centre mappings and records left inactive when they should be active.",configured incorrectly; incorrect configuration; wrong centre; wrong center; wrong supplier; supplier is reflecting; mapping; inactive contactallocation; not published; setup incorrect; misconfigured; wrong entity; flag not set
+10,Software Bug,"The application behaves incorrectly against its own design - reproducible errors, failed validations, regressions after a fix.",something went wrong; error message; reproduced the issue; reproducible; incorrect booking reference; regression; still occurs after fix; unexpected error; internal server error; validation error; glitch; incorrect booking referance; incorrect booking; error messege; pop up as; same issue happen to another; happened to another client
+10,Third-Party Service Failure,"A vendor or external service failed - payment processors, telephony providers, external portals.",worldpay; ingenico; ooma; printeron; third party; vendor; external provider; payment processor down; gateway error
+10,Human Error,A person made the change or mistake that caused the reported state.,modified by client themselves; changed it themselves; user error; entered incorrectly; agent error; manually changed; done by mistake; customer changed
+10,Access Issue,"The user lacks the rights, scope or visibility needed - permissions, roles, record scoping.",no access; do not have access; permissions; access rights; not visible to the user; cannot find; missing from the list; not authorised; unauthorized; scoping
+10,Dependency Failure,"An upstream or integration dependency did not deliver - interface, sync or feed between systems.",integration issue; interface issue; not synced; sync failed; feed did not run; not reflected in; visible on d365 but not; api failure; not pushed; did not integrate; available on my regus but not; showing unavailable for your selection; unavailable for your selection; no data in payments; has no data in; but are visible on; not showing on the website; available on one system but not
+10,Process Failure,"A business or operational process did not complete or was not followed - deprovisioning, offboarding, approvals.",not deprovisioned; still charged after; after the agreement ended; after termination; process not followed; not removed; approval missing; step skipped
+20,Hardware Issue,Physical equipment fault.,hardware fault; device faulty; card reader broken; screen dead; replaced the unit; physical damage
+20,Network Failure,Connectivity or network path failure.,no internet; network down; connection lost; timeout connecting; packet loss; dns; vpn down; wifi down
+20,Performance Degradation,"Working but too slow, timing out under normal load.",slow; timing out; takes too long; spinning; hangs; latency; performance
+20,Application Crash,The application terminated or became unusable.,crash; crashed; app closes; force close; white screen; fatal error
+20,Capacity Overload,Demand exceeded provisioned capacity.,capacity; overloaded; too many requests; quota exceeded; disk full; out of memory
+20,Resource Contention,Competing processes or locks blocked the work.,deadlock; locked record; contention; blocked by another process; concurrent update
+20,Change Management Error,"A release, deployment or planned change caused the issue.",after the release; after deployment; after the upgrade; change window; rollout; went live
+20,Patching Issues,A patch or update caused or failed to fix the issue.,patch; hotfix failed; after patching; update broke
+20,Firmware Issue,Device firmware fault or version mismatch.,firmware
+20,Licensing Problem,"Licence missing, expired or exhausted.",licence; license; entitlement expired; seats exhausted
+20,Security Breach,Unauthorised access or a security incident.,breach; compromised; unauthorised access; phishing; hacked; malware
+20,Communication Error,Information was not passed on or was passed on wrongly between people or teams.,not informed; miscommunication; not communicated; no handover; wrong information given
+20,Complaince Error,A regulatory or policy requirement was not met. (Spelling as per the ServiceNow picklist.),compliance; regulatory; gdpr; tax authority requirement; audit finding; policy breach
+20,Enviromental Error,"Environment-specific fault - wrong environment, environment misconfigured or unavailable. (Spelling as per the ServiceNow picklist.)",environment; uat; staging; test environment; wrong environment; prod only
+20,Backup Failure,A backup did not run or could not be relied on.,backup failed; no backup; backup missing
+20,Recovery Failure,A restore or recovery attempt failed.,restore failed; recovery failed; could not roll back; rollback failed
+20,Maintenance Error,A maintenance activity caused the issue.,during maintenance; maintenance window caused; scheduled maintenance
+20,Monitoring Failure,The issue went undetected because monitoring did not alert.,no alert; not detected; monitoring did not; alert did not fire
+20,Power Issue,Power loss or instability.,power outage; power cut; ups; electrical
+20,Training Issue,The user or agent did not know the correct procedure.,did not know how; needs training; unaware of the process; asked how to
+90,Unknown Cause,No evidence in the ticket or its history supports a specific cause. The honest default - do not replace it with a guess.,

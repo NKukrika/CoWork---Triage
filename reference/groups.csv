@@ -1,0 +1,25 @@
+Category,Primary group,Secondary group,Confidence,Rationale,Status
+Accounts and Companies,L2 - Titan,L2 - Proton,Medium,"Company and contact records live in Titan. Contact identity/duplicate-account cases cross into Proton/IAM first, then need a Titan hotfix (see TTN-139520, TTN-135630).",PROPOSED
+Bookings (Products),L2 - Portal,L2 - Titan,Medium,"Booking journey is a Customer Portal / TeamHub surface. Escalate to Titan when the agreement, sale or inventory record is wrong rather than the UI.",PROPOSED
+Bookings (Products) - Short Stay,L2 - Portal,L2 - Titan,Medium,Same as Bookings. CMR duration and check-in/out are portal behaviours; charging and agreement state are Titan.,PROPOSED
+CSU,L2 - Portal,,High,Confirmed by service owner: CSU sits with the Portal group.,CONFIRMED
+Center setup,L2 - Titan,,Medium,Centre configuration and centre master data are Titan-side.,PROPOSED
+Contract API/Agreements,L2 - Titan,,High,"Agreements, pricing and termination are Titan records; Contract API is a Titan integration.",PROPOSED
+Documents,L2 - Portal,L2 - Titan,Medium,Upload and viewing happen in the portal. Route to Titan when the document exists in Titan but is not returned to the portal (see TTN-143451).,PROPOSED
+Help and Inbox,L2 - Portal,,High,"In-portal help, inbox and chat surfaces are portal-owned.",PROPOSED
+Invoicing,L2 - Titan,L2 - Portal,Medium,Invoice generation and billing data are Titan. Route to Portal when the failure is a portal page error rather than wrong invoice data.,PROPOSED
+Login,L2 - Proton,L2 - Titan,Medium,"Authentication, OTP delivery and account verification are Proton/IAM. Cross to Titan when the cause is a userProfileId mismatch in dbo.ContactUserProfile - Proton cannot fix that side.",PROPOSED
+Memberships,L2 - Titan,,Medium,Membership entitlement and billing are Titan records.,PROPOSED
+Mobile,L2 - Portal,,High,The mobile app is a portal client.,PROPOSED
+Network devices,L2 - Portal,,High,Confirmed by service owner: device registration/login sits with the Portal group.,CONFIRMED
+Payments - Credit Card,L2 - Titan,L2 - Portal,Medium,"Card storage, autopayment runs and processor integration are Titan. Route to Portal when the customer cannot complete a payment on a portal page.",PROPOSED
+Payments - Direct Debit,L2 - Titan,,Medium,Mandates and collections are Titan-side billing.,PROPOSED
+Payments Registration,L2 - Titan,L2 - Portal,Medium,Registration writes to Titan and syncs to MyRegus; the known master is a Titan-to-MyRegus sync gap. Portal if the form itself errors.,PROPOSED
+Quick Access,L2 - Titan,L2 - Portal,Low,"Door entry depends on WorldKey and ContactAllocation in Titan (TTN-140498), but the Quick Access surface is TeamHub. Confirm which group takes these first.",PROPOSED
+Renewals,L2 - Titan,,Medium,"Renewal state, pricing and auto-renewal are Titan.",PROPOSED
+Retainers,L2 - Titan,,High,Retainer balances and refunds are Titan billing records.,PROPOSED
+Roles and Permissions,L2 - Proton,L2 - Portal,Low,"Identity and permission assignment lean Proton, but 'cannot see option' is often a portal rendering problem. Confirm.",PROPOSED
+SOA,L2 - Titan,,High,Statement of account content comes from Titan billing data.,PROPOSED
+Staff - Attendance and Timeoff,L2 - Portal,,Medium,TeamHub staff features.,PROPOSED
+Services,L2 - Titan,,Medium,Service provisioning and entitlement are Titan records.,PROPOSED
+XC (Product and Services),L2 - Titan,,Medium,"XC services, OOMA/DID provisioning and parking are Titan-side product records.",PROPOSED

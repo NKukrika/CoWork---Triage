@@ -1,0 +1,7 @@
+Group,Weight,Signal keywords
+L2 - Proton,3,proton; iam; auth0; sso; identity provider; login provider; token expired; oauth
+L2 - Proton,2,otp; one time password; verification code; not receiving verification; account not verified; password reset; authentication
+L2 - Titan,3,titan; dbo; contactuserprofile; userprofileid; contactallocation; inventorysale; sale id; saleid; worldkey; secondarytax; merge operation; titan database; titan db; hotfix in the titan
+L2 - Titan,2,hotfix; invoice extract; billing engine; charge record; agreement record; dynamics; f&o; fno; chargesecondarytax
+L2 - Portal,2,teamhub; team hub; mobile app; desktop version; portal page; page shows an error; something went wrong while; button greyed; option greyed; front end; browser
+L2 - Portal,1,customer portal; myregus; my regus; cp; screen; page; website

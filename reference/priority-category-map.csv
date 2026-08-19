@@ -1,0 +1,97 @@
+Category,Sheet,Issue type,Urgency,Status
+Login,CP,Login Issues,1,mapped
+Login,Teamhub,Login Issues,1,mapped
+Login,Titan,Login Issues,1,mapped
+Accounts and Companies,CP,Issues with Accounts & Companies,1,mapped
+Accounts and Companies,Teamhub,Incorrect or missing company details,2,mapped
+Accounts and Companies,Titan,Accounts and Company Issues,1,mapped
+Payments - Credit Card,CP,Credit Card payment issues,1,mapped
+Payments - Credit Card,Teamhub,,,NO EQUIVALENT in this sheet - needs a decision
+Payments - Credit Card,Titan,Payment issues,1,mapped
+Payments Registration,CP,Credit Card payment issues,1,mapped
+Payments Registration,Teamhub,,,NO EQUIVALENT in this sheet - needs a decision
+Payments Registration,Titan,Payment issues,1,mapped
+Payments - Direct Debit,CP,Direct Debit Payment issues,2,mapped
+Payments - Direct Debit,Teamhub,,,NO EQUIVALENT in this sheet - needs a decision
+Payments - Direct Debit,Titan,Payment issues,1,mapped
+Invoicing,CP,Invoice issues,2,mapped
+Invoicing,Teamhub,Previous/upcoming invoices,1,mapped
+Invoicing,Titan,Invoicing Issues,1,mapped
+SOA,CP,Balance mismatch,2,mapped
+SOA,Teamhub,,,NO EQUIVALENT in this sheet - needs a decision
+SOA,Titan,Balance mismatch and SOA Issues,2,mapped
+Retainers,CP,Return of Retainer Issues,2,mapped
+Retainers,Teamhub,,,NO EQUIVALENT in this sheet - needs a decision
+Retainers,Titan,Retainer Issues,2,mapped
+Bookings (Products),CP,Issue with Bookings,2,mapped
+Bookings (Products),Teamhub,Unable to Move Short stay Bookings,1,mapped
+Bookings (Products),Titan,Booking Issues,1,mapped
+Bookings (Products) - Short Stay,CP,Issue with Bookings,2,mapped
+Bookings (Products) - Short Stay,Teamhub,Unable to Move Short stay Bookings,1,mapped
+Bookings (Products) - Short Stay,Titan,Booking Issues,1,mapped
+Renewals,CP,Agreements: Renewals & Terminations,1,mapped
+Renewals,Teamhub,Amending an agreement,1,mapped
+Renewals,Titan,Renewal Issues,1,mapped
+Contract API/Agreements,CP,Agreements: Renewals & Terminations,1,mapped
+Contract API/Agreements,Teamhub,Amending an agreement,1,mapped
+Contract API/Agreements,Titan,Termination Issues,2,mapped
+XC (Product and Services),CP,Products & Services,2,mapped
+XC (Product and Services),Teamhub,Adding / Editing a Service,1,mapped
+XC (Product and Services),Titan,Products & Services Issues,2,mapped
+Services,CP,Products & Services,2,mapped
+Services,Teamhub,Adding / Editing a Service,1,mapped
+Services,Titan,Products & Services Issues,2,mapped
+Memberships,CP,Issues with Membership and Business Lounge,2,mapped
+Memberships,Teamhub,,,NO EQUIVALENT in this sheet - needs a decision
+Memberships,Titan,Membership & Business Lounge Issues,1,mapped
+Documents,CP,Customer Communications and Documents,3,mapped
+Documents,Teamhub,Customer Documents (eFile),3,mapped
+Documents,Titan,Customer E-File,3,mapped
+Help and Inbox,CP,Help & Inbox,3,mapped
+Help and Inbox,Teamhub,Logging a ticket,1,mapped
+Help and Inbox,Titan,,,NO EQUIVALENT in this sheet - needs a decision
+Quick Access,CP,World Key Pin issues,3,mapped
+Quick Access,Teamhub,Staff Worldkey Pin,2,mapped
+Quick Access,Titan,,,NO EQUIVALENT in this sheet - needs a decision
+Network devices,CP,Issues with adding Network Devices,1,mapped
+Network devices,Teamhub,,,NO EQUIVALENT in this sheet - needs a decision
+Network devices,Titan,,,NO EQUIVALENT in this sheet - needs a decision
+Center setup,CP,,,NO EQUIVALENT in this sheet - needs a decision
+Center setup,Teamhub,,,NO EQUIVALENT in this sheet - needs a decision
+Center setup,Titan,Centre Setup Interface Issues,2,mapped
+Mobile,CP,,,NO EQUIVALENT in this sheet - needs a decision
+Mobile,Teamhub,Updating the app,3,mapped
+Mobile,Titan,,,NO EQUIVALENT in this sheet - needs a decision
+Staff - Attendance and Timeoff,CP,,,NO EQUIVALENT in this sheet - needs a decision
+Staff - Attendance and Timeoff,Teamhub,My Status or Time Off,3,mapped
+Staff - Attendance and Timeoff,Titan,,,NO EQUIVALENT in this sheet - needs a decision
+Roles and Permissions,CP,,,NO EQUIVALENT in this sheet - needs a decision
+Roles and Permissions,Teamhub,Unable to access other centre/s,2,mapped
+Roles and Permissions,Titan,,,NO EQUIVALENT in this sheet - needs a decision
+CSU,CP,,,NO EQUIVALENT in this sheet - needs a decision
+CSU,Teamhub,,,NO EQUIVALENT in this sheet - needs a decision
+CSU,Titan,,,NO EQUIVALENT in this sheet - needs a decision
+Login,General,Systems access issues,1,General fallback
+Roles and Permissions,General,Systems access issues,1,General fallback
+Quick Access,General,Systems access issues,1,General fallback
+Invoicing,General,"Invoicing, bookings or Payment issues (workaround available)",2,General fallback
+Payments - Credit Card,General,"Invoicing, bookings or Payment issues (workaround available)",2,General fallback
+Payments Registration,General,"Invoicing, bookings or Payment issues (workaround available)",2,General fallback
+Payments - Direct Debit,General,"Invoicing, bookings or Payment issues (workaround available)",2,General fallback
+Bookings (Products),General,"Invoicing, bookings or Payment issues (workaround available)",2,General fallback
+Bookings (Products) - Short Stay,General,"Invoicing, bookings or Payment issues (workaround available)",2,General fallback
+SOA,General,Customer account balance issues (Statement of Account - SoA),3,General fallback
+Retainers,General,Customer account balance issues (Statement of Account - SoA),3,General fallback
+Documents,General,Visibility of documents,3,General fallback
+Mobile,General,Application updates,3,General fallback
+CSU,General,Requests in general,3,General fallback
+Staff - Attendance and Timeoff,General,Requests in general,3,General fallback
+Help and Inbox,General,Errors or issues in non-critical functionalities (none of the above),2,General fallback
+Accounts and Companies,General,Errors or issues in non-critical functionalities (none of the above),2,General fallback
+XC (Product and Services),General,Errors or issues in non-critical functionalities (none of the above),2,General fallback
+Services,General,Errors or issues in non-critical functionalities (none of the above),2,General fallback
+Memberships,General,Errors or issues in non-critical functionalities (none of the above),2,General fallback
+Renewals,General,Errors or issues in non-critical functionalities (none of the above),2,General fallback
+Contract API/Agreements,General,Errors or issues in non-critical functionalities (none of the above),2,General fallback
+Center setup,General,Errors or issues in non-critical functionalities (none of the above),2,General fallback
+Network devices,General,Errors or issues in non-critical functionalities (none of the above),2,General fallback

@@ -1,0 +1,22 @@
+Category,Primary group,Purity,Samples,Use surface tie-break?,Distribution,Note,Status
+Payments - Credit Card,L2 - Portal,0.83,96,no,L2 - Portal=80; L2 - Titan=16,,LEARNED from 623 resolved tickets
+XC (Product and Services),L2 - Proton,0.62,58,no,L2 - Proton=36; L2 - Portal=21; L2 - Titan=1,"SUB-RULE: telephony/OOMA/DID -> L2 - Proton; parking -> L2 - Portal first, rerouted if needed",LEARNED from 623 resolved tickets
+Payments Registration,L2 - Portal,0.89,56,no,L2 - Portal=50; L2 - Titan=5; L2 - Proton=1,,LEARNED from 623 resolved tickets
+Login,L2 - Proton,0.87,46,no,L2 - Proton=40; L2 - Portal=6,,LEARNED from 623 resolved tickets
+Bookings (Products) - Short Stay,L2 - Portal,0.74,27,no,L2 - Portal=20; L2 - Titan=5; L2 - Proton=2,,LEARNED from 623 resolved tickets
+Invoicing,L2 - Titan,0.53,19,no,L2 - Titan=10; L2 - Portal=8; L2 - Proton=1,,LEARNED from 623 resolved tickets
+Accounts and Companies,L2 - Portal,0.64,14,no,L2 - Portal=9; L2 - Proton=5,,LEARNED from 623 resolved tickets
+SOA,L2 - Titan,1.0,14,no,L2 - Titan=14,,CONFIRMED by service owner
+Retainers,L2 - Portal,0.89,9,no,L2 - Portal=8; L2 - Titan=1,,LEARNED from 623 resolved tickets
+Bookings (Products),L2 - Portal,1.0,6,no,L2 - Portal=6,,LEARNED from 623 resolved tickets
+Mobile,L2 - Portal,1.0,5,no,L2 - Portal=5,,LEARNED from 623 resolved tickets
+Documents,L2 - Portal,1.0,5,no,L2 - Portal=5,,LEARNED from 623 resolved tickets
+Services,L2 - Portal,1.0,5,no,L2 - Portal=5,,LEARNED from 623 resolved tickets
+Contract API/Agreements,L2 - Portal,1.0,3,no,L2 - Portal=3,,LEARNED from 623 resolved tickets
+CSU,L2 - Portal,1.0,3,no,L2 - Portal=3,,CONFIRMED by service owner
+Memberships,L2 - Portal,0.5,2,no,L2 - Portal=1; L2 - Proton=1,,LEARNED from 623 resolved tickets
+Roles and Permissions,L2 - Portal,1.0,1,no,L2 - Portal=1,,LEARNED from 623 resolved tickets
+Quick Access,L2 - Portal,1.0,1,no,L2 - Portal=1,,LEARNED from 623 resolved tickets
+Payments - Direct Debit,L2 - Portal,1.0,1,no,L2 - Portal=1,,LEARNED from 623 resolved tickets
+Center setup,L2 - Portal,1.0,1,no,L2 - Portal=1,,LEARNED from 623 resolved tickets
+Network devices,L2 - Portal,1.0,1,no,L2 - Portal=1,,LEARNED from 623 resolved tickets

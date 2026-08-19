@@ -1,0 +1,5 @@
+Impact,Users,Clients,Invoices/Bookings/Payments,Centres
+1,All Users,All Clients,"All Invoices, Bookings or Payments",All Centres
+2,Widespread issue (multiple users),Widespread issue (Multiple Customers),"Multiple Invoices, Bookings or Payments",Multiple Centres
+3,Few Users,Few Clients,"Some Invoice, Booking or Payment",(Single) VIP
+4,Single User,Single Client,"Single Invoice, Booking or Payment",
