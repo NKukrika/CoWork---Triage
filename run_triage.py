@@ -77,7 +77,7 @@ CLUSTERS = {
         "note": "AT 7 AND GROWING. TWO DECISIONS OVERDUE: (1) the name says 'Invoices paid ... showing unpaid' but most members are payments and vouchers that never arrived at all - rename or split; (2) the registry master [SOA] Balance Mismatch competes for these tickets and has NO MST tag - allocate one and fold the cluster in, or scope the master's keywords.",
     },
     "[Renewals] Error submitting renewal team request in TeamHub": {
-        "cat": "Renewals", "ids": ["INC0768533", "INC0768544", "INC0768550"],
+        "cat": "Renewals", "ids": [],
         "terms": "submit your request; renewal team; send to customer; error occurred when trying to submit; an error occured while trying to submit your request; central renewal support; crt ticket",
         "note": "NOW 8 OF 10, from seven reporters across four batches. Escalate to the TeamHub team rather than waiting for the count.",
     },
@@ -85,12 +85,22 @@ CLUSTERS = {
     # freezes, rather than the handoff to the renewals team failing.
     "[Renewals] Error when amending an agreement in TeamHub": {
         "cat": "Renewals",
-        "ids": ["INC0768359", "INC0768485", "INC0768499", "INC0768524"],
+        "ids": [],
         "terms": "error occured when performing amend agreement; error occurred when performing amend agreement; unable to send renewal osa; teamhub freezes; something went wrong, please log an it ticket via teamhub; move agreement",
         "note": "CATEGORY IS AN OPEN QUESTION - bracketed [Renewals] provisionally. A resolved ticket worded 'Not able to amend agreement' is tagged XC (Product and Services), while the 14 Aug review put TeamHub amend/renew errors under Renewals. Also spans renewal amendments (INC0768485, INC0768499) and office/country moves (INC0768359, INC0768524) - may want splitting.",
     },
+    # Five tickets asking for a duplicate or invalid posting in MyRegus to be
+    # reversed or zeroed out. Distinct from the D365-sync cluster: there the
+    # record never arrived, here it arrived twice or wrongly. The registry master
+    # [SOA] Balance Mismatch competes for these and still has no MST tag.
+    "[SOA] Duplicate or invalid posting in MyRegus needs reversing": {
+        "cat": "SOA",
+        "ids": ["INC0761524", "INC0767564", "INC0768203", "INC0768754", "INC0768105"],
+        "terms": "duplicate posting; duplicate payment in myregus; reversing the invalid; invalid refund posting; duplicate refund; zero-out the amount; remove or zero-out; reflecting twice; posted twice",
+        "note": "Five across three batches, all finance corrections in MyRegus. Sibling of the D365-sync cluster but the opposite direction - the record arrived twice or wrongly rather than not at all. If you would rather treat these as routine finance requests than defects, they can come off the tally.",
+    },
     "[Bookings (Products)] Cannot rollback a booking terminated while provisional": {
-        "cat": "Bookings (Products)", "ids": ["INC0768504"],
+        "cat": "Bookings (Products)", "ids": [],
         "terms": "rollback the termination; cannot rollback; unable to rollback; terminated while provisional; terminated while it was still provisional; greyed out; grayed out; edit/roll back option",
         "note": "",
     },
@@ -101,6 +111,11 @@ CLUSTERS = {
     },
     # Owner ruling, 14 Aug: NOT a child of MST-76060. Being unable to SEE the
     # Preview OSA screen is a different fault from being unable to SEND from it.
+    "[Bookings (Products)] Unable to confirm booking in Staff Mode": {
+        "cat": "Bookings (Products)", "ids": ["INC0768738"],
+        "terms": "confirm booking; cannot be confirmed; booking cannot be completed; event space booking; after-hours meeting room; staff mode",
+        "note": "INC0768738 is an event space booking failing in Customer Portal Staff Mode - the same flow this cluster tracks.",
+    },
     "[Bookings (Products)] Unable to see Preview OSA screen for Move Office": {
         "cat": "Bookings (Products)", "ids": [],
         "terms": "preview osa screen; move office; confirmation screen did not appear; unable to see preview",
@@ -110,12 +125,12 @@ CLUSTERS = {
     # Access, so the cluster bracket follows -- when a clustered ticket's category
     # disagrees with the cluster name, the cluster name is the likely error.
     "[Quick Access] WorldKey PIN rejected as invalid on HP Cloud Printing portal": {
-        "cat": "Quick Access", "ids": ["INC0768575"],
+        "cat": "Quick Access", "ids": [],
         "terms": "world key pin; worldkey pin; wkp; credentials invalid; worldkey pin not working",
         "note": "RENAMED from [Login] on 17 Aug. The 5 earlier tickets were tagged Login and need retagging if you adopt the rename.",
     },
     "[Invoicing] Credit note requested for an incorrectly billed charge": {
-        "cat": "Invoicing", "ids": ["INC0768528", "INC0768539"],
+        "cat": "Invoicing", "ids": [],
         "terms": "issuance of the corresponding credit note; assistance with a credit note; billed twice; late payment fee; incorrectly generated; authorization from the franchise owner",
         "note": "Both carry franchise-owner authorisation and both correct an incorrect charge rather than report a portal fault. If these are routine finance requests they may not belong on this tally - your call.",
     },
@@ -126,6 +141,12 @@ CLUSTER_OF = {t: name for name, c in CLUSTERS.items() for t in c["ids"]}
 # is written from the body rather than drafted mechanically. UNCATEGORISED marks
 # a name that cannot be finalised until the category is decided.
 MANUAL_NAME = {
+    # 20 Aug
+    "INC0768632": "[Roles and Permissions] TeamHub access removed - Deputy City Manager needs City Manager permissions",
+    "INC0768650": "[Contract API/Agreements] OSA not autoloaded in Titan after acceptance",
+    "INC0768680": "[Accounts and Companies] Customer records missing from the ServiceNow client list",
+    "INC0768701": "[Memberships] Incorrect membership visit shown in the Regus portal",
+    "INC0768764": "[Contract API/Agreements] Unable to upload signed paper agreement in OSA Detail",
     # 13-14 Aug
     "INC0767810": "[UNCATEGORISED] Global Protect VPN is not working",
     "INC0767842": "[UNCATEGORISED] Titan activation fee mismatch between booking and summary",
@@ -388,49 +409,15 @@ prev = prev.sort_values("Total seen", ascending=False)
 # Every ticket->master link asserted since 12 Aug was re-checked on 19 Aug. Six
 # were wrong. If ChildTicket / MST tags were already applied in ServiceNow for
 # these, they need removing.
-CORRECTIONS = [
-    ("INC0767819", "unlinked by my 19 Aug audit", "MST-71283",
-     "[XC (Product and Services)] OOMA issues with DID - RESTORED",
-     "My audit removed this link on the grounds that the ticket never mentions OOMA. Wrong: OOMA is the telephony platform behind Call Answering and DID, and MST-71283 is the registry's only home for DID issues. The link was correct all along."),
-    ("INC0767855", "unlinked by my 19 Aug audit", "MST-71283",
-     "[XC (Product and Services)] OOMA issues with DID - RESTORED", "As INC0767819."),
-    ("INC0768158", "unlinked by my 19 Aug audit", "MST-71283",
-     "[XC (Product and Services)] OOMA issues with DID - RESTORED", "As INC0767819."),
-    ("INC0768538", "unlinked by my 19 Aug audit", "MST-71283",
-     "[XC (Product and Services)] OOMA issues with DID - RESTORED", "As INC0767819. Confirmed by the owner."),
-    ("INC0768542", "unlinked by my 19 Aug audit", "MST - 011-25",
-     "[XC (Product and Services)] Recurring services are charged after termination of the agreement - RESTORED",
-     "A service that has left recurring sales but is still billed is this master's issue. 'Termination' covers the service ending, not only a whole agreement ending."),
-    ("INC0768500", "no master (missed)", "",
-     "[XC (Product and Services)] OOMA issues with DID - NEW LINK",
-     "Premium Call Answering self-service settings on MyRegus. Missed because I was matching the literal word OOMA rather than the master's subject. Confirmed by the owner."),
-    ("INC0768543", "no master (missed)", "",
-     "[Payments Registration] Issue setting up default payment method - NEW LINK",
-     "Cannot pay by card AND cannot add a card. Confirmed by the owner. INC0768427 is the identical symptom pair and now links here too."),
-    ("INC0768427", "no master (missed)", "",
-     "[Payments Registration] Issue setting up default payment method - NEW LINK",
-     "Same symptom pair as INC0768543, so it follows the owner's ruling. Previously left unlinked as a low-confidence tie."),
-    ("INC0767995", "no master (missed)", "",
-     "[XC (Product and Services)] OOMA issues with DID - NEW LINK",
-     "Callstream office number cannot make or receive calls - a telephony fault, which is what this master covers. Routing stays L2 - Portal per the sheet, as the reviewer accepted on 14 Aug."),
-    ("INC0768438", "no master (missed)", "",
-     "[Payments - Credit Card] Autopayment not working for Credit Card Worldpay/Ingenico - NEW LINK",
-     "Delayed deduction from the card on file, no rejection found at the payment portal - an autopayment processing failure."),
-    ("INC0768592", "no master (missed)", "",
-     "[Payments - Credit Card] Autopayment not working for Credit Card Worldpay/Ingenico - NEW LINK",
-     "AutoPay collected less than the full invoice amount after a credit note was applied."),
-    ("INC0768546", "unlinked by my 19 Aug audit", "MST-71215",
-     "[Login] Account needs activation (MST - 002-25) - RELINKED",
-     "The audit was right that MST-71215's discriminators are 'not verified' and 'suspended', but wrong to leave it unlinked. A new client whose account is marked inactive needs activation, which is MST - 002-25."),
-    ("INC0768571", "no master (missed)", "",
-     "[Login] Error while logging in to Myregus staff mode - NEW LINK",
-     "Staff login issue affecting both MyRegus and TeamHub."),
-    ("INC0768590", "no master (missed)", "",
-     "[Login] Account needs activation - NEW LINK",
-     "MyRegus account activation and access not working."),
-]
+# The 19 Aug master audit and its reversal are recorded in the 19 Aug workbook
+# and in BENCHMARK.md. Nothing to correct this run.
+CORRECTIONS = []
 corr = pd.DataFrame(CORRECTIONS, columns=[
     "TicketID", "Was", "MST tag involved", "Should be", "Reason"])
+if corr.empty:
+    corr = pd.DataFrame([{"TicketID": "-", "Was": "-", "MST tag involved": "-",
+                          "Should be": "-",
+                          "Reason": "No master links corrected this run. The 19 Aug audit and its reversal are in Triage_2026-08-19_v3.xlsx and reference/BENCHMARK.md."}])
 
 # ---------------------------------------------------------------- other sheets
 gsum = fin.groupby("Assigned Group (should be)").size().reset_index(name="Tickets")
@@ -445,26 +432,16 @@ tagsheet = pd.DataFrame([{
 } for _, r in fin.iterrows()])
 
 REVIEW_EXTRA = [
-    ("MASTER AUDIT", "6 master links corrected - RETAGGING MAY BE NEEDED",
-     "Every master link asserted since 12 Aug was re-checked. Six were wrong: INC0767819, INC0767855, INC0768158, INC0768538 (all under MST-71283 OOMA issues with DID, none involving OOMA), INC0768542 (MST - 011-25) and INC0768546 (MST-71215). If ChildTicket and MST tags were already applied in ServiceNow, they need removing. See the Master Corrections sheet."),
-    ("INC0768238", "Master fits, category does not",
-     "Correctly matched to MST-71223 Agreement automatically renewed without client's action - the client disputes accepting the renewal and the IP address request is the evidence they want. But that master sits under Bookings (Products) - Short Stay while this is a Titan office agreement, so the registry category puts an office renewal under Short Stay. Either widen the master's category or give office renewals their own master."),
-    ("TEAMHUB", "ESCALATE - TeamHub renewals is 8 of 10",
-     "The renewal-team cluster took three more (INC0768533, INC0768544, INC0768550) and stands at 8, from seven reporters across four batches. The sibling amend-agreement cluster is at 4. That is 12 tickets on the TeamHub agreement journey in under a week - worth raising now rather than waiting for either count to cross 10."),
-    ("INC0768485", "Reporter cites a prior incident",
-     "States this is the same issue as INC0767413, which is not in any batch I have seen. If it exists it should be linked, and it may move the renewal-amendment count up."),
-    ("INC0768499", "Workaround is blocked",
-     "TeamHub freezes before the office can be changed back, so the documented workaround cannot be completed."),
-    ("INC0768540", "Possible link to the booking cluster",
-     "'MyRegus booking down for customers' - the reporter checked the status page for a known outage. It may be the same fault as the meeting-room payment-step cluster (INC0768112, INC0768123) but the description does not say where the booking fails."),
-    ("INC0768543", "Master match ties - not applied",
-     "Reports both 'cannot pay by card' and 'cannot add a card', so it ties MST-71216 and MST-71221. Grouped with INC0768427."),
-    ("INC0768505", "Country-specific e-invoicing rule",
-     "Greek UBL validation: the invoice ID first segment must be a valid TIN matching the supplier or tax representative. Configuration or master data rather than a portal defect."),
-    ("INC0768469", "Country-specific e-invoicing rule",
-     "Finland: a customer set to e-invoicing only is receiving both an e-invoice and an email invoice."),
-    ("INC0768589", "Master match to confirm",
-     "Matched to MST-71579 Issue setting up default payment method. The error is 'Card Type doesn't match the selection' on a Visa that is correctly selected, which may be a narrower defect than that master covers."),
+    ("DID", "Wrong DID on MyRegus profile is now 8 tickets", "INC0768679, INC0768686 and INC0768687 are three more in one day, all 'wrong DID showing' on the MyRegus profile, all asking explicitly for Proton. With INC0767819, INC0767855, INC0768158, INC0768500 and INC0768538 that is 8 children of MST-71283 across five batches. The master exists so no new one is needed, but the volume is worth raising - and all three reporters state the correct DID in the ticket, so these look like data corrections rather than a code defect."),
+    ("AUTOPAY", "Autopay not collecting is 6 tickets", "INC0768746, INC0768753 and INC0768756 all report a registered default card where automatic payment never runs, joining INC0768037, INC0768438 and INC0768592 under MST-71218. INC0768746 adds that no payment-failure notice was sent either, so the customer could not tell the collection had failed."),
+    ("INC0768754", "BLOCKER - master has no MST tag", "Matches [SOA] Balance Mismatch, which still carries no MST tag. That master has now competed for tickets in three consecutive batches. It needs a tag or narrower keywords."),
+    ("INC0768680", "Scope call needed", "Customer records missing from the ServiceNow client list. The flag reads 'out of scope' because it names ServiceNow, but the missing data is IWG customer records and the reporter confirmed the customers are linked correctly in the Customer Portal. The sheet routes it to L2 - Proton. On 14 Aug you sent a similar ServiceNow ticket to L3-ServiceNow Platform - confirm which applies here."),
+    ("INC0768745", "Master match to confirm", "The credit card entry form never appears - no error, the form is simply absent. Linked to MST-71221 'Something went wrong Error when trying to add Payment Card' because it is the only add-a-card master, but the failure mode differs. INC0768759 is the same symptom."),
+    ("INC0768759", "Master match to confirm", "As INC0768745 - the online card entry form did not appear."),
+    ("INC0768764", "OSA upload stuck on a spinner", "Renewal in the grace period, signed paper agreement upload hangs with no action triggered. With INC0768650 (OSA not autoloaded) and INC0768242 from 18 Aug, that is three OSA agreement faults in three days - no master covers OSA handling."),
+    ("INC0768703", "Master match to confirm", "Linked to MST-71510 'Retainer issues' at Medium. That master is broad; this is specifically the Return of Retainer button missing for an eligible client."),
+    ("INC0768632", "Permissions request, not a fault", "A Deputy City Manager asking for access aligned to City Manager permissions. Reads as an access request rather than a defect - worth checking whether it should be a service request instead of an incident."),
+    ("INC0767909", "Master match to confirm", "Wi-Fi connectivity at centre 1521, linked to MST-71542 'Network devices registration/login'. The ticket says the connection works but is on 192.168.11.245, which reads as an addressing or VLAN problem rather than registration or login."),
 ]
 rev = pd.DataFrame([{"TicketID": t, "Issue": k, "Detail": d}
                     for t, k, d in list(review) + REVIEW_EXTRA],

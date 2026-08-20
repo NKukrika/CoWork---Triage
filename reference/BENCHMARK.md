@@ -350,6 +350,18 @@ The split between the two is deliberate: one is the *handoff* to the renewals or
 
 **The regression harness now lives in the repo.** It had been sitting in `/tmp` and was wiped when the sandbox restarted, which is a poor place for the one thing that has to run after every change. `measure.py` at the workspace root reports all four ground-truth sets and picks up new scorecards automatically by filename.
 
+## Run of 20 Aug 2026 — a truncated title was hiding the fault
+
+21 tickets. **11 matched an existing master**, the highest yet, and across all batches master links now stand at **42 of 104** (14 before the owner's correction, 30 after it, 42 after this run's fix). Every ground-truth measure held: 377 resolved 88.0%, master matching 184/190, routing 98.4%, 17-Aug scorecard 20/20.
+
+**A short description is only a title when someone wrote one.** ServiceNow truncates a pasted email into the short description at ~160 characters, frequently mid-sentence. INC0768753 cut off at *"…set as the Default Payment Preference; however,"* — so master matching, which prefers the short description, saw only the setup context and matched a payment-setup master, while the actual fault (autopay never runs) sat in the very next clause.
+
+**The first fix was the wrong discriminator.** Using `is_pipe_structured` to decide cost 2 on the master benchmark, because plenty of genuine titles have no pipe — `[Login] Client not receiving verification code via mobile phone` was treated as body text and lost to a sibling master. The precise test is whether **the body starts with the short description**: if it does, the short description is a body prefix and there is no title to prefer, so the whole text is matched. `_is_body_prefix()` does that, and it recovered the 2 while keeping the 12 gained.
+
+**Two clusters grew and one opened.** `[SOA] Duplicate or invalid posting in MyRegus needs reversing` at **5** — the mirror image of the D365-sync cluster: there the record never arrived, here it arrived twice or wrongly. Staff Mode bookings reached 3.
+
+**Volume worth reporting even when a master already exists.** Eight tickets now sit under `MST-71283` (wrong DID on the MyRegus profile) across five batches, three of them on the same day, and every reporter states the correct DID in the ticket — which reads as data correction rather than a code defect. Six sit under `MST-71218` (autopay not collecting). A master existing is not a reason to stay quiet about the rate.
+
 ## The master audit was wrong — masters are BROADER than their wording
 
 **Retracted: the "6 of 46 links were wrong" audit below.** The owner's correction — *"you didn't use masters correctly, there are more of them that you should have used"* — was the opposite of my conclusion, and they were right.

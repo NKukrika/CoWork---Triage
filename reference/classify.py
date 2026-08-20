@@ -1020,6 +1020,27 @@ def symptom_body(description):
     return t
 
 
+def _is_body_prefix(short_desc, description, probe=60):
+    """Is the short description just the opening of the body, not a title?
+
+    ServiceNow truncates a pasted email into the short description at ~160
+    characters, often mid-sentence and before the fault is named: INC0768753 cut
+    off at "...set as the Default Payment Preference; however," so its title
+    described the setup while the actual fault sat in the next clause.
+
+    Testing for pipes is the wrong discriminator -- plenty of real titles have no
+    pipe ("[Login] Client not receiving verification code via mobile phone"), and
+    treating those as body text let a sibling master win. The precise test is
+    whether the body STARTS WITH the short description; if it does, there is no
+    title to prefer and the whole text should be matched.
+    """
+    sd = re.sub(r"\s+", " ", (short_desc or "")).strip().lower()
+    body = re.sub(r"\s+", " ", (description or "")).strip().lower()
+    if len(sd) < probe or not body:
+        return False
+    return body.startswith(sd[:probe])
+
+
 def triage_row(short_desc, description, cats, masters, kbas,
                kba_index=None, master_index=None):
     """Triage one ticket row, weighting the short description over the body.
@@ -1036,13 +1057,24 @@ def triage_row(short_desc, description, cats, masters, kbas,
     description = symptom_body(description)
     full = f"{short_desc} {description}"
 
-    master, conf, hits, runners = match_master(short_desc, masters)
-    match_scope = "short description"
-    if master is None:
+    # The short description only outranks the body when the ticket was WRITTEN to
+    # the convention. On a free-form email the "short description" is just the
+    # first ~160 characters of the body, frequently truncated mid-sentence and
+    # before the fault is stated -- INC0768753 cut off at "...set as the Default
+    # Payment Preference; however," so it matched a payment-setup master while
+    # the actual fault, autopay not running, sat in the next clause. For those
+    # tickets there is no title to prefer, so match on the whole text.
+    if not _is_body_prefix(short_desc, description):
+        master, conf, hits, runners = match_master(short_desc, masters)
+        match_scope = "short description"
+        if master is None:
+            master, conf, hits, runners = match_master(full, masters)
+            match_scope = "description body" if master is not None else "none"
+            if master is not None and conf == "High":
+                conf = "Medium"   # body-only evidence is weaker than a title match
+    else:
         master, conf, hits, runners = match_master(full, masters)
-        match_scope = "description body" if master is not None else "none"
-        if master is not None and conf == "High":
-            conf = "Medium"   # body-only evidence is weaker than a title match
+        match_scope = "full text (free-form ticket, no title to prefer)" if master else "none"
 
     raw_hint, hint_cat = pipe_hint(short_desc, cats)
 
