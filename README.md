@@ -1,4 +1,13 @@
-# Triage Workspace
+# Triage Workspace — ARCHIVED
+
+> **This repository is archived. Triage now lives in
+> [iwg-ops-toolkit](https://github.com/NKukrika/iwg-ops-toolkit), under `triage/`.**
+>
+> Everything here was ported across on 24 Aug 2026 and verified identical. Keeping two copies
+> is what let them drift in the first place — the toolkit copy had been stale for days and
+> shipped two bugs that were already fixed here. Do all future triage work in the toolkit.
+>
+> This repo is kept read-only for its commit history.
 
 Workspace for triaging incoming ServiceNow tickets against master tickets, categories, KBAs, and JIRA history.
 
