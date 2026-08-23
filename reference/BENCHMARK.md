@@ -350,6 +350,92 @@ The split between the two is deliberate: one is the *handoff* to the renewals or
 
 **The regression harness now lives in the repo.** It had been sitting in `/tmp` and was wiped when the sandbox restarted, which is a poor place for the one thing that has to run after every change. `measure.py` at the workspace root reports all four ground-truth sets and picks up new scorecards automatically by filename.
 
+## Fourth scorecard — 143 rows covering every batch to 21 Aug
+
+The first review covering the 18–21 Aug runs. Scores on the four unreviewed batches:
+
+| | 18 Aug | 19 Aug | 20 Aug | 21 Aug | total |
+|---|---|---|---|---|---|
+| Category | 14/15 | 25/26 | 21/21 | 10/11 | **70/73 (96%)** |
+| Routing | 14/14 | 26/26 | 21/21 | 6/10 | **67/71 (94%)** |
+| Priority | 10/14 | 26/26 | 19/21 | 8/10 | **63/71 (89%)** |
+| Short description | 14/15 | 22/26 | 20/21 | 10/11 | **66/73 (90%)** |
+| Root cause | 11/15 | 9/26 | 12/21 | 0/10 | **32/72 (44%)** |
+
+**Root cause was the one weak field, and it was fixable.** With 110 graded priorities and 97 usable root causes there is now enough data to rebuild the priors from what the desk actually chooses rather than from the older resolved set. Rebuilt: **44% → 67%** on the graded rows, **62% leave-one-out**. Three priors changed and one category was added:
+
+| Category | Was | Now | Evidence |
+|---|---|---|---|
+| Renewals | *(absent)* | **Performance Degradation** | 6 of 10 |
+| SOA | Data Corruption | **Configuration Error** | 10 of 11 |
+| Login | Access Issue | **Configuration Error** | 3 of 3 |
+| Bookings (Products) | — | **Unknown Cause** | 8 of 8 |
+
+The pattern behind it: the desk reaches for `Unknown Cause` on request-type tickets and reserves specific causes for reproducible faults. `Performance Degradation` for the TeamHub renewal family is the sharpest single signal — it says the desk reads those as slowness, not a logic defect.
+
+**Priority is at its ceiling with the supplied fields.** On 110 graded tickets the matrix alone scores 80%; the shipped rule (matrix + P1/P2 capped to P3 without outage evidence + Quick Access → P4) scores **86%**, exactly matching an empirically re-derived matrix. The residual 15 errors sit inside two cells that genuinely split — `U3×I3` gave P4 thirty-two times and P3 ten times, `U2×I4` gave P4 twelve times and P3 four. **Across 110 graded tickets the reviewer has never once chosen P1 or P2.** No further change is justified from Impact and Urgency alone.
+
+### The scorecard's tick boxes were broken, and not by the formula
+
+Diagnosed on request. The formulas themselves were correct; they had been **destroyed by a paste**. Across the 143 data rows:
+
+```
+2,388  cells holding a non-breaking space (looks blank, is not empty)
+  588  literal ✓        121  literal ✗        (hard-coded, never recalculate)
+  130  cells still holding a formula, all in rows 114-146
+```
+
+So a corrected value no longer updates its tick, and a `CHAR(160)` "blank" defeats both `COUNTIF` and the reviewer's eye. The non-breaking spaces are the signature of content pasted from a rendered table or web page.
+
+Fixed copy written with: every tick rebuilt as a formula across rows 5–1003, `CHAR(160)` stripped, comparison made tolerant of brackets, case, spacing and `UNCATEGORISED` ≡ `Unclassified`, Dashboard ranges moved off the `INC0000001` example row, and `fullCalcOnLoad` set so Excel recomputes on open.
+
+**A bug in my own fix, caught before shipping**: the first attempt mapped tick columns off by one and wrote formulas that referenced the tick cell itself — 25 circular references. Asserting on the generated file caught it. Verified: 0 circular references, 0 tick cells without a formula.
+
+### Contradictions to resolve rather than encode
+
+Four places where this scorecard disagrees with an earlier instruction, left unchanged and flagged:
+
+- **INC0768543** — graded `Payments - Credit Card` / "Cannot pay invoice online", but on 19 Aug the instruction was that this ticket belongs to `MST-71579 Issue setting up default payment method`, which is `Payments Registration`.
+- **Amend-agreement category** — INC0768359 graded `Bookings (Products)` on 18 Aug, while the same cluster's tickets (INC0768485/499/524) were accepted as `Renewals` on 19 Aug.
+- **Call answering routing** — INC0768827 and INC0768872 corrected Portal → Proton on 21 Aug, but INC0768500, the same request from the same reporter, was accepted as Portal on 19 Aug.
+- **Short description** — three tickets (INC0768438, INC0768500, INC0768592) were rewritten from the master's name to the ticket's own symptom, which cuts against rule 2 as implemented.
+
+**21 Aug root causes are unusable**: ten of them hold a category name (`Accounts and Companies`, `Invoicing`, `XC (Product and Services)`, `Renewals`, `Documents`) rather than a value from the 29-item picklist. Excluded from the rebuild rather than learned from.
+
+## JIRA connected, 21 Aug 2026 — one defect explains a whole cluster
+
+The Atlassian connector is authorised. First pass answered questions the ticket text could not.
+
+**TTN-143719 is the root cause behind four tickets and a cluster.** `[ENHANCE-9600] Prevent back-dated charges and double-billing on occupancy step amendments` — **Fixed, Ready For Release, fix version R26.08.01 dated 2026-08-13 but not yet released.** QA passed 17 Aug, UAT 20 Aug.
+
+- Root cause: an `OccupancyStepId` mismatch in `MandatoryRecurringServiceHelper.AddMandatoryServices` creates a fresh `ServiceSale` with a new `SaleItemLink`, no billing history and a **backdated** `StartDate` — so billing retroactively charges every period since the original booking start.
+- Second symptom: an occupant-count change leaves the original recurring row billing in parallel with the new one.
+- In scope: **Kitchen Amenities, Beverages, Unlimited Coffee** on Long-Term Office and Workstation bookings.
+
+That covers INC0768814 and INC0768331 (KA backbill), INC0768932 (Kitchen Amenity double-billed, Japan, "affecting multiple clients"), and almost certainly INC0768542 from 19 Aug (unlimited coffee and tea still billed). **The JIRA also states Operations is patching the double-billing monthly with manual credit notes** — which is exactly what the `[Invoicing] Credit note requested for an incorrectly billed charge` cluster has been recording without knowing why. Those tickets should be linked and held, not worked individually, and more will arrive until R26.08.01 ships.
+
+**Nothing in JIRA covers the 9-ticket TeamHub renewal cluster.** CEN has two open amend-agreement bugs — CEN-49075 (renewal price incorrect after repeated saves, New, unassigned) and CEN-46754 (RENEWBOOKING action failed even when renewal succeeds, Blocked) — but neither is the production *"error occurred when trying to submit your request"* failure. Eight reporters, no tracking issue. That is now the strongest case for raising a new defect.
+
+**PAPI-80621 supports treating the DID cluster as data corrections.** `[WITH L2] [OOMA] Customer is requesting the change of DID number`, Pending, records the portal DID not matching Cerebro because the number was **purged** there, and is explicitly logged *"for track purpose only, not for Proton team"*. It also independently confirms the owner's correction that DID work belongs to the OOMA master.
+
+### Practical note for future JIRA use
+
+**The connector's `fields` parameter is not honoured** — every issue returns its full description, and a 50-result search blew the token limit twice. Use `searchResultMode: "count"` first and only fetch when the count is small. Tight JQL beats broad JQL plus field selection.
+
+## Run of 21 Aug 2026 — the TeamHub renewal cluster reaches 9
+
+12 tickets, the smallest batch yet. All measures held: 377 resolved 88.2%, master matching 184/190, routing 98.4%, 17-Aug scorecard 20/20.
+
+**`[Renewals] Error submitting renewal team request in TeamHub` is at 9 of 10.** Eight reporters, five batches. The sibling amend-agreement cluster is at 4. One more occurrence of either crosses the threshold.
+
+**Another generic-phrase master match caught.** INC0767028 — a printer document that *"sits on a loading screen and never prints"* — matched `MST-71537 When trying to login via mobile, loading screen appears` on the bare phrase `loading screen`. Same family as `did number`, `staff mode` and `cc`: a common UI phrase used as a master discriminator. `Context required = login` now scopes it, which costs nothing on the benchmarks because that master's real subject is logging in.
+
+**Printer output faults are now a tracked cluster at 3.** INC0767028, INC0768143, INC0768271. Grouped under one `[UNCATEGORISED]` name so all three stay consistent with the 17 Aug ruling that print output is not Quick Access. Worth noting INC0767028 *would* have classified as Quick Access, but only because the reporter mentions refreshing WKP from MyRegus Quick Access as a troubleshooting step — the fault is print output. That is the fourth printer ticket and the category decision is still open.
+
+**Two tickets citing the same JIRA.** INC0768814 and INC0768331 both cite `TTN-143719` for KA backbill charges that cannot be removed — tracked as a cluster so the link is visible even though the Atlassian connector is unauthorised and the issue cannot be read.
+
+**One ticket that is not a ticket.** INC0768846 has `test` as both its short description and its description. Flagged for closure rather than triaged.
+
 ## Run of 20 Aug 2026 — a truncated title was hiding the fault
 
 21 tickets. **11 matched an existing master**, the highest yet, and across all batches master links now stand at **42 of 104** (14 before the owner's correction, 30 after it, 42 after this run's fix). Every ground-truth measure held: 377 resolved 88.0%, master matching 184/190, routing 98.4%, 17-Aug scorecard 20/20.
@@ -425,3 +511,79 @@ Kept after review, with reasons: INC0768004/032/420/422 → `Cannot pay invoice 
 ## Impact and Urgency now arrive on the export
 
 From this batch the export carries `Impact` and `Urgency` columns. **Use them; do not infer.** Priority becomes a straight matrix lookup, which is the same principle as the Assignment group: a field the export supplies is not second-guessed. The P1 outage cap still applies. Every Impact supplied so far is 3 or 4, which is consistent with P3 being the working default.
+
+## Benchmark expanded to 3,716 tickets, 24 Aug 2026
+
+`training 2.xlsx` (Feb 2024 – Aug 2026, 3,361 rows from 2026) replaces the 623-row set as the
+resolved-ticket benchmark. It multiplies the two tag-derived truth sets by roughly six:
+
+| Truth set | Was | Now |
+|---|---|---|
+| Category, from `Tags` | 377 | **2,370** |
+| Master, from `MST-` tags | 190 | **1,237** |
+| Routing, from the desk's group | 623 | **0 — column absent** |
+
+**All 1,237 MST tags resolve to a master in the registry, none unmapped.** That is the single
+most reassuring number here: the registry is not drifting away from what the desk actually tags.
+
+Measured on it, with rows opened from **1 Jul 2026** held out and reported separately:
+
+| | All | Held out (≥ 2026-07-01) |
+|---|---|---|
+| Category | 2049/2370 = **86.5%** | 297/338 = **87.9%** |
+| Master | 1192/1237 = **96.4%** | 140/141 = **99.3%** (0 gaps, 1 wrong) |
+
+### 86.5% is not a regression from the recorded 89.5%
+
+Different set, six times larger, reaching back two years. Broken down by quarter the older
+labelling is plainly the drag, and current practice is flat against the old figure:
+
+```
+2025Q3   21 rows  66.7%      2026Q1  910 rows  88.4%
+2025Q4  156 rows  80.8%      2026Q2  942 rows  85.7%
+                             2026Q3  338 rows  87.9%
+```
+
+The ~180 pre-2026 rows pull the headline down by about two points. **Score the holdout, not the
+headline**, when judging a change.
+
+### A real weak spot the small set was hiding
+
+Accuracy by category, where there are at least 30 rows to judge on:
+
+| Category | Rows | Correct |
+|---|---|---|
+| Bookings (Products) | 52 | **48.1%** |
+| Invoicing | 101 | 70.3% |
+| SOA | 80 | 78.8% |
+| Accounts and Companies | 138 | 81.2% |
+| Bookings (Products) - Short Stay | 202 | 82.2% |
+| Payments Registration | 262 | 86.3% |
+
+`Bookings (Products)` losing more than half its rows is worth a keyword pass on its own — it was
+invisible at 377 rows. Note it also sits behind two known contradictions: the amend-agreement
+tickets split between `Bookings (Products)` and `Renewals`, and its root-cause prior was set to
+`Unknown Cause` on 8 of 8. Resolve the contradiction before tuning keywords, or the tuning
+chases a moving label.
+
+### What this export cannot measure, and why
+
+- **Routing.** No assignment-group column, so the 623-row routing check is gone rather than
+  reduced. The harness now says `SKIPPED` instead of dividing by zero.
+- **Priority.** There is no `Impact` column, and `Severity` is the constant `3 - Low` on all
+  3,716 rows. The matrix is urgency × impact, so it cannot be re-derived from this file.
+- **Root cause.** No resolution-code or close-notes column. Root cause is still scorecard-only.
+
+A re-export carrying `Assignment group`, `Impact` and the resolution code would close all three.
+
+### Contamination, and the holdout that answers it
+
+25 of the 139 scorecard-graded tickets are inside this export. Fitting on the whole file and then
+quoting scorecard accuracy would be scoring partly on training rows — hence the 1 Jul cut.
+
+Two harness changes came out of this and matter beyond it. Scorecard rows now fall back to the
+training export for ticket text when a batch export is missing, but **routing is skipped for
+those rows**: they carry no supplied group, so scoring them measures the fallback rule rather
+than the shipped "the group on the export wins" behaviour, and it reads as a 76% routing
+regression that does not exist. And the run now prints a warning when no batch export is found
+at all, instead of printing an empty scorecard section that looks like a pass.

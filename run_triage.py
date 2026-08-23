@@ -24,7 +24,19 @@ if not SRC:
              "       run from the workspace root (the folder holding reference/ and runs/)")
 OUT = sys.argv[2] if len(sys.argv) > 2 else \
     f"runs/Triage_{datetime.date.today():%Y-%m-%d}.xlsx"
-JIRA_NOTE = "Not checked - Atlassian connector requires authorization"
+JIRA_NOTE = "No matching JIRA found"
+
+# Checked against JIRA on 21 Aug via the Atlassian connector. Keyed by ticket.
+# NOTE for future runs: the connector's `fields` parameter is NOT honoured, so
+# every issue returns its full description. Use searchResultMode="count" first
+# and only fetch when the count is small, or the response blows the token limit.
+JIRA_FINDINGS = {
+    "INC0768814": "TTN-143719 - Fixed, Ready For Release, fix version R26.08.01 (dated 2026-08-13, NOT YET RELEASED). '[ENHANCE-9600] Prevent back-dated charges and double-billing on occupancy step amendments'. Root cause: OccupancyStepId mismatch in MandatoryRecurringServiceHelper.AddMandatoryServices creates a fresh backdated ServiceSale with no billing history, so the customer is back-billed for periods already invoiced. QA passed 17 Aug, UAT passed 20 Aug.",
+    "INC0768932": "TTN-143719 symptom 2 (double-billing on occupant change) - same defect, Fixed and awaiting the R26.08.01 release. In scope: Kitchen Amenities, Beverages, Unlimited Coffee. The JIRA states Operations is patching this monthly with manual credit notes, which matches the AHD comment on this ticket that it affects multiple clients.",
+    "INC0768827": "PAPI-80621 pattern - '[WITH L2] [OOMA] Customer is requesting the change of DID number', status Pending. That ticket records the portal DID not matching Cerebro because the number was PURGED there, and is explicitly logged 'for track purpose only, not for Proton team'. Consistent with these being data corrections rather than a code defect.",
+    "INC0768872": "PAPI-80621 pattern - see INC0768827.",
+    "INC0768916": "No matching JIRA found. CEN has two open amend-agreement bugs - CEN-49075 (renewal price incorrect after repeated saves, New) and CEN-46754 (RENEWBOOKING action failed even when renewal succeeds, Blocked) - but neither is the production 'error occurred when trying to submit your request' failure. Nothing is tracking this 9-ticket cluster.",
+}
 
 cats, masters, kbas = C.load_reference()
 groups, signals = C.load_groups()
@@ -77,9 +89,9 @@ CLUSTERS = {
         "note": "AT 7 AND GROWING. TWO DECISIONS OVERDUE: (1) the name says 'Invoices paid ... showing unpaid' but most members are payments and vouchers that never arrived at all - rename or split; (2) the registry master [SOA] Balance Mismatch competes for these tickets and has NO MST tag - allocate one and fold the cluster in, or scope the master's keywords.",
     },
     "[Renewals] Error submitting renewal team request in TeamHub": {
-        "cat": "Renewals", "ids": [],
+        "cat": "Renewals", "ids": ["INC0768916"],
         "terms": "submit your request; renewal team; send to customer; error occurred when trying to submit; an error occured while trying to submit your request; central renewal support; crt ticket",
-        "note": "NOW 8 OF 10, from seven reporters across four batches. Escalate to the TeamHub team rather than waiting for the count.",
+        "note": "NO JIRA COVERS THIS - checked 21 Aug. NOW 9 - ONE MORE CROSSES THE THRESHOLD. INC0768916 is 'connect to centralized renewals' erroring with 'place an IT ticket', the same handoff failure. Eight reporters across five batches. This should be raised with the TeamHub team now; the next occurrence makes it a master.",
     },
     # Sibling of the above but a distinct symptom: the amendment ITSELF errors or
     # freezes, rather than the handoff to the renewals team failing.
@@ -95,9 +107,26 @@ CLUSTERS = {
     # [SOA] Balance Mismatch competes for these and still has no MST tag.
     "[SOA] Duplicate or invalid posting in MyRegus needs reversing": {
         "cat": "SOA",
-        "ids": ["INC0761524", "INC0767564", "INC0768203", "INC0768754", "INC0768105"],
+        "ids": [],
         "terms": "duplicate posting; duplicate payment in myregus; reversing the invalid; invalid refund posting; duplicate refund; zero-out the amount; remove or zero-out; reflecting twice; posted twice",
         "note": "Five across three batches, all finance corrections in MyRegus. Sibling of the D365-sync cluster but the opposite direction - the record arrived twice or wrongly rather than not at all. If you would rather treat these as routine finance requests than defects, they can come off the tally.",
+    },
+    # Printer OUTPUT faults. The owner confirmed on 17 Aug that a printer which
+    # authenticates but does not print is NOT Quick Access - Quick Access covers
+    # getting TO the printer. There is still no category for print output, so
+    # these carry UNCATEGORISED and cannot be fully tagged.
+    "[UNCATEGORISED] Printer accepts the job but nothing prints": {
+        "cat": "Unclassified",
+        "ids": ["INC0767028", "INC0768143", "INC0768271"],
+        "terms": "nothing prints; never prints; sits on a loading screen; shows the job as completed; print jobs send successfully",
+        "note": "Three tickets, no category. INC0767028 classifies as Quick Access only because the reporter mentions refreshing WKP from MyRegus Quick Access as a troubleshooting step - the fault is print output. This is the fourth printer ticket overall and the category decision is still open.",
+    },
+    # Two tickets both citing TTN-143719, the KA backbill defect.
+    "[Invoicing] KA backbill cannot be removed (TTN-143719)": {
+        "cat": "Invoicing",
+        "ids": ["INC0768814", "INC0768331"],
+        "terms": "backbilled ka; ka backbill; backbilled ka cannot be removed; unnecessary ka fee; ka fee",
+        "note": "CONFIRMED IN JIRA: TTN-143719 is Fixed and Ready For Release under R26.08.01, dated 2026-08-13 but NOT YET RELEASED. Both tickets are children of it and the fix is upstream - they should not be worked individually. INC0768932 (19 Aug) is the same defect's second symptom. Expect more until R26.08.01 ships.",
     },
     "[Bookings (Products)] Cannot rollback a booking terminated while provisional": {
         "cat": "Bookings (Products)", "ids": [],
@@ -112,7 +141,7 @@ CLUSTERS = {
     # Owner ruling, 14 Aug: NOT a child of MST-76060. Being unable to SEE the
     # Preview OSA screen is a different fault from being unable to SEND from it.
     "[Bookings (Products)] Unable to confirm booking in Staff Mode": {
-        "cat": "Bookings (Products)", "ids": ["INC0768738"],
+        "cat": "Bookings (Products)", "ids": [],
         "terms": "confirm booking; cannot be confirmed; booking cannot be completed; event space booking; after-hours meeting room; staff mode",
         "note": "INC0768738 is an event space booking failing in Customer Portal Staff Mode - the same flow this cluster tracks.",
     },
@@ -141,6 +170,12 @@ CLUSTER_OF = {t: name for name, c in CLUSTERS.items() for t in c["ids"]}
 # is written from the body rather than drafted mechanically. UNCATEGORISED marks
 # a name that cannot be finalised until the category is decided.
 MANUAL_NAME = {
+    # 21 Aug
+    "INC0768805": "[Accounts and Companies] France customer data hotfix - phase 2",
+    "INC0768846": "[UNCATEGORISED] Test ticket - no issue reported",
+    "INC0768929": "[Documents] Customer company security blocks receipt upload to MyRegus",
+    "INC0768932": "[Invoicing] Kitchen Amenity charged on a room with no contract",
+    "INC0768946": "[Invoicing] Incorrect date format on TeamHub service charges",
     # 20 Aug
     "INC0768632": "[Roles and Permissions] TeamHub access removed - Deputy City Manager needs City Manager permissions",
     "INC0768650": "[Contract API/Agreements] OSA not autoloaded in Titan after acceptance",
@@ -340,7 +375,7 @@ for _, s in src.iterrows():
         "Root cause basis": rc_basis, "Out of scope?": out_of_scope,
         "KBA (strong only)": kba,
         "Best-ranked KBA (below threshold - agent judgement)": "" if kba else kba_top,
-        "All KBA candidates": all_kba, "JIRA": JIRA_NOTE,
+        "All KBA candidates": all_kba, "JIRA": JIRA_FINDINGS.get(tid, JIRA_NOTE),
         "Tags": ", ".join(tags), "State": s.get("State"),
     })
     if g.get("suggested") and C.canon_group(str(g["suggested"])) != C.canon_group(g["group"]):
@@ -353,7 +388,27 @@ det = pd.DataFrame(detail)
 # ---------------------------------------------------------------- tally
 # Pin this to the last run you have SIGNED OFF, not simply the newest file, or a
 # superseded run injects retracted clusters into every future one.
-prev_file = os.environ.get("TRIAGE_TALLY_FROM", "runs/Triage_2026-08-18.xlsx")
+#
+# Signed off through 21 Aug 2026 (fourth scorecard, 143 rows, covers every batch
+# to 21 Aug). Advance this line when a later run is reviewed -- leaving it behind
+# silently RESETS every cluster count to the older figure, which reads as normal
+# output. The guard below makes that visible instead.
+prev_file = os.environ.get("TRIAGE_TALLY_FROM", "runs/Triage_2026-08-21_v2.xlsx")
+if not os.path.exists(prev_file):
+    sys.exit(f"""tally source missing: {prev_file}
+  The Proposed Masters running count lives only inside that workbook.
+  Restore it, or set TRIAGE_TALLY_FROM to the last signed-off run.""")
+
+_newer = [f for f in glob.glob("runs/Triage_*.xlsx")
+          if os.path.getmtime(f) > os.path.getmtime(prev_file)]
+if _newer:
+    print(f"  ! tally pinned to {os.path.basename(prev_file)}, but "
+          f"{len(_newer)} newer run workbook(s) exist:")
+    for f in sorted(_newer, key=os.path.getmtime):
+        print(f"      {os.path.basename(f)}")
+    print("""    If any of those were signed off, advance TRIAGE_TALLY_FROM or the
+    default above -- otherwise their cluster counts are being discarded.""")
+
 prev = pd.read_excel(prev_file, sheet_name="Proposed Masters").copy()
 namecol = prev.columns[0]
 for old, new, newcat in [
@@ -432,16 +487,18 @@ tagsheet = pd.DataFrame([{
 } for _, r in fin.iterrows()])
 
 REVIEW_EXTRA = [
-    ("DID", "Wrong DID on MyRegus profile is now 8 tickets", "INC0768679, INC0768686 and INC0768687 are three more in one day, all 'wrong DID showing' on the MyRegus profile, all asking explicitly for Proton. With INC0767819, INC0767855, INC0768158, INC0768500 and INC0768538 that is 8 children of MST-71283 across five batches. The master exists so no new one is needed, but the volume is worth raising - and all three reporters state the correct DID in the ticket, so these look like data corrections rather than a code defect."),
-    ("AUTOPAY", "Autopay not collecting is 6 tickets", "INC0768746, INC0768753 and INC0768756 all report a registered default card where automatic payment never runs, joining INC0768037, INC0768438 and INC0768592 under MST-71218. INC0768746 adds that no payment-failure notice was sent either, so the customer could not tell the collection had failed."),
-    ("INC0768754", "BLOCKER - master has no MST tag", "Matches [SOA] Balance Mismatch, which still carries no MST tag. That master has now competed for tickets in three consecutive batches. It needs a tag or narrower keywords."),
-    ("INC0768680", "Scope call needed", "Customer records missing from the ServiceNow client list. The flag reads 'out of scope' because it names ServiceNow, but the missing data is IWG customer records and the reporter confirmed the customers are linked correctly in the Customer Portal. The sheet routes it to L2 - Proton. On 14 Aug you sent a similar ServiceNow ticket to L3-ServiceNow Platform - confirm which applies here."),
-    ("INC0768745", "Master match to confirm", "The credit card entry form never appears - no error, the form is simply absent. Linked to MST-71221 'Something went wrong Error when trying to add Payment Card' because it is the only add-a-card master, but the failure mode differs. INC0768759 is the same symptom."),
-    ("INC0768759", "Master match to confirm", "As INC0768745 - the online card entry form did not appear."),
-    ("INC0768764", "OSA upload stuck on a spinner", "Renewal in the grace period, signed paper agreement upload hangs with no action triggered. With INC0768650 (OSA not autoloaded) and INC0768242 from 18 Aug, that is three OSA agreement faults in three days - no master covers OSA handling."),
-    ("INC0768703", "Master match to confirm", "Linked to MST-71510 'Retainer issues' at Medium. That master is broad; this is specifically the Return of Retainer button missing for an eligible client."),
-    ("INC0768632", "Permissions request, not a fault", "A Deputy City Manager asking for access aligned to City Manager permissions. Reads as an access request rather than a defect - worth checking whether it should be a service request instead of an incident."),
-    ("INC0767909", "Master match to confirm", "Wi-Fi connectivity at centre 1521, linked to MST-71542 'Network devices registration/login'. The ticket says the connection works but is on 192.168.11.245, which reads as an addressing or VLAN problem rather than registration or login."),
+    ("TTN-143719", "ROOT CAUSE FOUND - fix built, not yet released", "TTN-143719 '[ENHANCE-9600] Prevent back-dated charges and double-billing on occupancy step amendments' is Fixed, Ready For Release, fix version R26.08.01 dated 2026-08-13 but NOT YET RELEASED. It covers Kitchen Amenities, Beverages and Unlimited Coffee on Long-Term Office and Workstation bookings. Tickets already matched to it: INC0768814 and INC0768331 (KA backbill), INC0768932 (Kitchen Amenity double-billed, Japan) and very likely INC0768542 from 19 Aug (unlimited coffee and tea still billed). The JIRA notes Operations is patching the double-billing monthly with manual credit notes - which is what the [Invoicing] Credit note cluster has been recording. These should be linked to the JIRA and held, not worked one by one, and more will arrive until R26.08.01 ships."),
+    ("TEAMHUB", "ESCALATE - 9 tickets and NO JIRA covers it", "The TeamHub renewal-team cluster is at 9 of 10 and a JIRA search on 21 Aug found nothing tracking it. CEN has two open amend-agreement bugs - CEN-49075 (renewal price incorrect after repeated saves, New, unassigned) and CEN-46754 (RENEWBOOKING action failed even when renewal succeeds, Blocked) - but neither is the production 'error occurred when trying to submit your request' failure that eight reporters have now hit. This needs raising with the TeamHub team as a new defect."),
+    ("DID", "Likely data corrections, not a defect", "PAPI-80621 '[WITH L2] [OOMA] Customer is requesting the change of DID number' is Pending and records the same shape: the DID on the Customer Portal does not match Cerebro because the number was purged there. It is explicitly logged 'for track purpose only, not for Proton team'. That supports treating the 8-ticket DID cluster as data corrections handled by L2 rather than a code defect - and is worth confirming, because if the portal keeps serving a purged number there may be a sync fix worth having."),
+    ("INC0768846", "NOT A REAL TICKET", "Short description and description are both the single word 'test'. Nothing to triage - close it."),
+    ("INC0768929", "Not our defect", "The customer's own corporate security blocks file uploads to external sites. Needs a workaround (email the receipt, or an allow-list on the customer side) rather than a fix."),
+    ("INC0768872", "Repeat of INC0768500", "Same reporter, same customer request, same wording as INC0768500 from 19 Aug, with added detail that two profiles are active and the VO profile should be deactivated. Check whether INC0768500 is still open."),
+    ("INC0768932", "Reported as affecting multiple clients", "AHD states this is a system issue currently affecting multiple clients. Now confirmed as TTN-143719 symptom 2. Supplied Impact 4 gives P3; the JIRA evidence suggests the real blast radius is larger."),
+    ("INC0768946", "Reported as affecting the whole centre", "TeamHub service charge dates render as 07-1月-2006 instead of 1-7月-2006, stated as affecting multiple users across the entire centre on TeamHub 2.82 - a localisation defect."),
+    ("INC0767028", "Printer category still undecided - now 4 tickets", "Fourth printer ticket. Classifies as Quick Access only because the reporter mentions refreshing WKP from MyRegus Quick Access while troubleshooting; the fault is that the document sits on a loading screen and never prints. Grouped with INC0768143 and INC0768271 under one UNCATEGORISED name, per your 17 Aug ruling."),
+    ("INC0768787", "Master match to confirm", "A Suspended notification appears in MyRegus but Titan shows no suspension history and no outstanding balance. Linked to MST-71215; MST-71212 'Account showing blocked in My Regus' is the alternative reading."),
+    ("INC0768818", "Master match to confirm", "Linked to MST-71224 'Unable to find linked account to switch' at High. The user is redirected to an unlinked account and linking fails with 'office account does not exist'."),
+    ("INC0768805", "Bulk data fix, not an incident", "France customer data hotfix, phase 2, with two attached files of corrected account data. A deployment request rather than a fault report."),
 ]
 rev = pd.DataFrame([{"TicketID": t, "Issue": k, "Detail": d}
                     for t, k, d in list(review) + REVIEW_EXTRA],

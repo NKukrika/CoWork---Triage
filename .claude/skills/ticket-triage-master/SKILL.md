@@ -22,6 +22,11 @@ Output defaults to `runs/Triage_<today>.xlsx`. Requires `pandas` and `openpyxl`.
 After changing **any** file in `reference/`, run `python measure.py` — it re-checks accuracy
 against the benchmark set so a reference edit can't silently degrade matching.
 
+`measure.py` needs the ground-truth workbooks, which are not committed. It looks in
+`$TRIAGE_UPLOADS`, then `reference/truth/`, then `runs/`, and stops with the filenames it
+wants if they are absent — see `reference/truth/README.md`. **If it cannot run, say so and
+do not claim a reference change was measured.**
+
 ## Order of work per ticket
 
 1. **Match to a master ticket** in `reference/master-tickets.csv` — this happens first.
@@ -74,9 +79,15 @@ Confirm before saving.
 A new master is created only once the same issue has been seen **more than 10 times**. Do not
 propose a new master each run.
 
-The running count lives in the **Proposed Masters** sheet inside the newest workbook in `runs/`.
-Each run reads that sheet, adds the batch's counts, and writes the updated sheet into the new
-workbook. There is deliberately no parallel CSV — two copies of a running count drift apart.
+The running count lives in the **Proposed Masters** sheet inside a run workbook. Each run reads
+that sheet, adds the batch's counts, and writes the updated sheet into the new workbook. There
+is deliberately no parallel CSV — two copies of a running count drift apart.
+
+It reads the **last run you signed off**, not the newest file — a superseded run would inject
+retracted clusters into every future one. That pin is `TRIAGE_TALLY_FROM`, defaulting to the
+constant in `run_triage.py`. **Advance it whenever a run is signed off.** Leaving it behind
+silently resets every cluster to the older count, which reads as ordinary output; the run now
+prints a warning listing newer workbooks, and that warning must be resolved, not ignored.
 
 Until a cluster passes 10: tag `TriagedTicket` + category, no `ChildTicket`, and leave the
 Master Ticket column **empty**. No master exists to be a child of.

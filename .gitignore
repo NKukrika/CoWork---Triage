@@ -8,3 +8,8 @@ __pycache__/
 # committed. Decide deliberately before relaxing this — see README.
 runs/*
 !runs/.gitkeep
+
+# Ground-truth workbooks for measure.py contain real ticket data. The folder and
+# its README are tracked; the data files are not.
+reference/truth/*
+!reference/truth/README.md
