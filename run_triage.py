@@ -84,12 +84,12 @@ PRIOR = prior_names(exclude={os.path.abspath(OUT)})
 # cluster for six card tickets that already had masters.
 CLUSTERS = {
     "[SOA] Invoices paid in D365 still showing unpaid in MyRegus": {
-        "cat": "SOA", "ids": [],
+        "cat": "SOA", "ids": ["INC0769158"],
         "terms": "mark invoices as paid; showing as unpaid; already allocated in dyn; still shows unpaid after settlement; not reflecting in myregus; already reflected in dyn; payment adjustment",
         "note": "AT 7 AND GROWING. TWO DECISIONS OVERDUE: (1) the name says 'Invoices paid ... showing unpaid' but most members are payments and vouchers that never arrived at all - rename or split; (2) the registry master [SOA] Balance Mismatch competes for these tickets and has NO MST tag - allocate one and fold the cluster in, or scope the master's keywords.",
     },
     "[Renewals] Error submitting renewal team request in TeamHub": {
-        "cat": "Renewals", "ids": ["INC0768916"],
+        "cat": "Renewals", "ids": [],
         "terms": "submit your request; renewal team; send to customer; error occurred when trying to submit; an error occured while trying to submit your request; central renewal support; crt ticket",
         "note": "NO JIRA COVERS THIS - checked 21 Aug. NOW 9 - ONE MORE CROSSES THE THRESHOLD. INC0768916 is 'connect to centralized renewals' erroring with 'place an IT ticket', the same handoff failure. Eight reporters across five batches. This should be raised with the TeamHub team now; the next occurrence makes it a master.",
     },
@@ -97,7 +97,7 @@ CLUSTERS = {
     # freezes, rather than the handoff to the renewals team failing.
     "[Renewals] Error when amending an agreement in TeamHub": {
         "cat": "Renewals",
-        "ids": [],
+        "ids": ["INC0769090", "INC0768982"],
         "terms": "error occured when performing amend agreement; error occurred when performing amend agreement; unable to send renewal osa; teamhub freezes; something went wrong, please log an it ticket via teamhub; move agreement",
         "note": "CATEGORY IS AN OPEN QUESTION - bracketed [Renewals] provisionally. A resolved ticket worded 'Not able to amend agreement' is tagged XC (Product and Services), while the 14 Aug review put TeamHub amend/renew errors under Renewals. Also spans renewal amendments (INC0768485, INC0768499) and office/country moves (INC0768359, INC0768524) - may want splitting.",
     },
@@ -117,19 +117,19 @@ CLUSTERS = {
     # these carry UNCATEGORISED and cannot be fully tagged.
     "[UNCATEGORISED] Printer accepts the job but nothing prints": {
         "cat": "Unclassified",
-        "ids": ["INC0767028", "INC0768143", "INC0768271"],
+        "ids": [],
         "terms": "nothing prints; never prints; sits on a loading screen; shows the job as completed; print jobs send successfully",
         "note": "Three tickets, no category. INC0767028 classifies as Quick Access only because the reporter mentions refreshing WKP from MyRegus Quick Access as a troubleshooting step - the fault is print output. This is the fourth printer ticket overall and the category decision is still open.",
     },
     # Two tickets both citing TTN-143719, the KA backbill defect.
     "[Invoicing] KA backbill cannot be removed (TTN-143719)": {
         "cat": "Invoicing",
-        "ids": ["INC0768814", "INC0768331"],
+        "ids": [],
         "terms": "backbilled ka; ka backbill; backbilled ka cannot be removed; unnecessary ka fee; ka fee",
         "note": "CONFIRMED IN JIRA: TTN-143719 is Fixed and Ready For Release under R26.08.01, dated 2026-08-13 but NOT YET RELEASED. Both tickets are children of it and the fix is upstream - they should not be worked individually. INC0768932 (19 Aug) is the same defect's second symptom. Expect more until R26.08.01 ships.",
     },
     "[Bookings (Products)] Cannot rollback a booking terminated while provisional": {
-        "cat": "Bookings (Products)", "ids": [],
+        "cat": "Bookings (Products)", "ids": ["INC0768094"],
         "terms": "rollback the termination; cannot rollback; unable to rollback; terminated while provisional; terminated while it was still provisional; greyed out; grayed out; edit/roll back option",
         "note": "",
     },
@@ -158,6 +158,14 @@ CLUSTERS = {
         "terms": "world key pin; worldkey pin; wkp; credentials invalid; worldkey pin not working",
         "note": "RENAMED from [Login] on 17 Aug. The 5 earlier tickets were tagged Login and need retagging if you adopt the rename.",
     },
+    # Three tickets where invoices exist in the portal but the notification email
+    # never arrives. Distinct from "invoices not found" - the invoice is there.
+    "[Invoicing] Invoices generated but the email is never delivered": {
+        "cat": "Invoicing",
+        "ids": ["INC0768988", "INC0768070", "INC0768376"],
+        "terms": "invoice email has not been received; monthly invoice email; not receiving invoices; invoices were generated but not sent; invoice email not received",
+        "note": "Three across three batches, all Titan. In every one the client can still see the invoice in the portal, so this is a delivery failure rather than an invoicing fault. INC0768988 has been running since July 2026.",
+    },
     "[Invoicing] Credit note requested for an incorrectly billed charge": {
         "cat": "Invoicing", "ids": [],
         "terms": "issuance of the corresponding credit note; assistance with a credit note; billed twice; late payment fee; incorrectly generated; authorization from the franchise owner",
@@ -170,6 +178,8 @@ CLUSTER_OF = {t: name for name, c in CLUSTERS.items() for t in c["ids"]}
 # is written from the body rather than drafted mechanically. UNCATEGORISED marks
 # a name that cannot be finalised until the category is decided.
 MANUAL_NAME = {
+    # 24 Aug
+    "INC0769018": "[Accounts and Companies] Company name changed on the account without authorisation",
     # 21 Aug
     "INC0768805": "[Accounts and Companies] France customer data hotfix - phase 2",
     "INC0768846": "[UNCATEGORISED] Test ticket - no issue reported",
@@ -487,18 +497,12 @@ tagsheet = pd.DataFrame([{
 } for _, r in fin.iterrows()])
 
 REVIEW_EXTRA = [
-    ("TTN-143719", "ROOT CAUSE FOUND - fix built, not yet released", "TTN-143719 '[ENHANCE-9600] Prevent back-dated charges and double-billing on occupancy step amendments' is Fixed, Ready For Release, fix version R26.08.01 dated 2026-08-13 but NOT YET RELEASED. It covers Kitchen Amenities, Beverages and Unlimited Coffee on Long-Term Office and Workstation bookings. Tickets already matched to it: INC0768814 and INC0768331 (KA backbill), INC0768932 (Kitchen Amenity double-billed, Japan) and very likely INC0768542 from 19 Aug (unlimited coffee and tea still billed). The JIRA notes Operations is patching the double-billing monthly with manual credit notes - which is what the [Invoicing] Credit note cluster has been recording. These should be linked to the JIRA and held, not worked one by one, and more will arrive until R26.08.01 ships."),
-    ("TEAMHUB", "ESCALATE - 9 tickets and NO JIRA covers it", "The TeamHub renewal-team cluster is at 9 of 10 and a JIRA search on 21 Aug found nothing tracking it. CEN has two open amend-agreement bugs - CEN-49075 (renewal price incorrect after repeated saves, New, unassigned) and CEN-46754 (RENEWBOOKING action failed even when renewal succeeds, Blocked) - but neither is the production 'error occurred when trying to submit your request' failure that eight reporters have now hit. This needs raising with the TeamHub team as a new defect."),
-    ("DID", "Likely data corrections, not a defect", "PAPI-80621 '[WITH L2] [OOMA] Customer is requesting the change of DID number' is Pending and records the same shape: the DID on the Customer Portal does not match Cerebro because the number was purged there. It is explicitly logged 'for track purpose only, not for Proton team'. That supports treating the 8-ticket DID cluster as data corrections handled by L2 rather than a code defect - and is worth confirming, because if the portal keeps serving a purged number there may be a sync fix worth having."),
-    ("INC0768846", "NOT A REAL TICKET", "Short description and description are both the single word 'test'. Nothing to triage - close it."),
-    ("INC0768929", "Not our defect", "The customer's own corporate security blocks file uploads to external sites. Needs a workaround (email the receipt, or an allow-list on the customer side) rather than a fix."),
-    ("INC0768872", "Repeat of INC0768500", "Same reporter, same customer request, same wording as INC0768500 from 19 Aug, with added detail that two profiles are active and the VO profile should be deactivated. Check whether INC0768500 is still open."),
-    ("INC0768932", "Reported as affecting multiple clients", "AHD states this is a system issue currently affecting multiple clients. Now confirmed as TTN-143719 symptom 2. Supplied Impact 4 gives P3; the JIRA evidence suggests the real blast radius is larger."),
-    ("INC0768946", "Reported as affecting the whole centre", "TeamHub service charge dates render as 07-1月-2006 instead of 1-7月-2006, stated as affecting multiple users across the entire centre on TeamHub 2.82 - a localisation defect."),
-    ("INC0767028", "Printer category still undecided - now 4 tickets", "Fourth printer ticket. Classifies as Quick Access only because the reporter mentions refreshing WKP from MyRegus Quick Access while troubleshooting; the fault is that the document sits on a loading screen and never prints. Grouped with INC0768143 and INC0768271 under one UNCATEGORISED name, per your 17 Aug ruling."),
-    ("INC0768787", "Master match to confirm", "A Suspended notification appears in MyRegus but Titan shows no suspension history and no outstanding balance. Linked to MST-71215; MST-71212 'Account showing blocked in My Regus' is the alternative reading."),
-    ("INC0768818", "Master match to confirm", "Linked to MST-71224 'Unable to find linked account to switch' at High. The user is redirected to an unlinked account and linking fails with 'office account does not exist'."),
-    ("INC0768805", "Bulk data fix, not an incident", "France customer data hotfix, phase 2, with two attached files of corrected account data. A deployment request rather than a fault report."),
+    ("INC0769018", "POSSIBLE UNAUTHORISED CHANGE - handle first", "The company name on account 17289448 was changed and the admin says they did not do it; the administrator list was reviewed with no identifiable actor. Matrix gives P3, but an unexplained change to customer account data is an audit question before it is a triage question. Worth pulling the Titan/MyRegus audit trail for who made the change and when, rather than routing it as a normal Accounts ticket."),
+    ("TEAMHUB", "Amend-agreement cluster now 6, renewal-team cluster 9", "INC0769090 (error renewing a recent termination via Amend agreement > Renew recent termination) and INC0768982 (OSA sends inconsistent office content) take the amend-agreement cluster to 6. With the renewal-team cluster at 9 that is 15 tickets on the TeamHub agreement journey. A JIRA check on 21 Aug found nothing tracking either."),
+    ("INC0769158", "SOA D365 cluster now 8", "Invoice 2852-2024-612INV posted in D365 but not in MyRegus. Note the issue start date is 2024-11-30 - this is a two-year-old record, so it may be a backlog item rather than a new occurrence of the sync fault."),
+    ("INC0768988", "Third invoice-email delivery ticket", "With INC0768070 and INC0768376. In all three the client can see the invoice in the portal, so the invoice exists and only the email fails. Running since July 2026 on this one."),
+    ("INC0768094", "Carried over, and the desk has adopted the rename", "The export now carries my generated name '[Bookings (Products)] Cannot rollback a booking terminated while provisional' as its short description and the tags TriagedTicket + Bookings (Products). Also note the group has moved from L2 - Titan to L2 - Portal since 14 Aug."),
+    ("INC0768982", "Category to confirm", "OSA sending shows one office then both a few seconds later - reads as a race or caching problem in the OSA send path. Classified Contract API/Agreements on the OSA wording; it sits close to the amend-agreement cluster, where it is counted."),
 ]
 rev = pd.DataFrame([{"TicketID": t, "Issue": k, "Detail": d}
                     for t, k, d in list(review) + REVIEW_EXTRA],
